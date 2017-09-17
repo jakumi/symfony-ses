@@ -1,5 +1,7 @@
 <?php
 
+namespace jakumi\SymfonySes;
+
 use Aws\Ses\SesClient;
 
 class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
