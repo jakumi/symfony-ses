@@ -29,7 +29,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
 
     public function start() {}
     public function stop() {}
-    public fucntion isStarted() {
+    public function isStarted() {
         return true;
     }
 
