@@ -89,9 +89,9 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
         //$request['Message']['Body']['Text']['Charset'] = 'UTF-8';
         //
 
-        $message = [
+        $request = [
             'ReturnPath' => $this->_getReversePath($message),
-            'Source' => $message->getSender(),
+            'Source' => $this->_getReversePath($message),
             //'ReplyToAddresses' => [],
             'Destination' => [
                 'ToAddresses' => $_to,
@@ -104,8 +104,10 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
                     'Charset' => 'UTF-8',
                 ],
                 'Body' => [
-                    'Data' => $message->getBody(),
-                    'Charset' => 'UTF-8',
+                    'Text' => [
+                        'Data' => $message->getBody(),
+                        'Charset' => 'UTF-8',
+                    ],
                 ],
             ]
         ];
@@ -113,9 +115,8 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
         try {
             $result = $this->client->sendEmail($request);
             $messageId = $result->get('MessageId');
-            return null;
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new \Swift_TransportException($e->getMessage());
         }
 
 
