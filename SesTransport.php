@@ -113,7 +113,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             $this->_eventDispatcher->dispatchEvent($evt, 'sendPerformed');
         }
 
-        return count($to) + count($cc)
+        return count($to) + count($cc);
     }
 
     /** Determine the best-use reverse path for this message,
