@@ -1,0 +1,18 @@
+{
+    "name": "jakumi/symfony-ses",
+    "license": "MIT",
+    "type": "project",
+    "description": "a swiftmailer transport to provide a convenient way to set ses as a transport in symfony 3 (but possibly 2 as well ...)",
+    "autoload": {
+        "psr-4": {
+            "jakumi\\SymfonySes\\": ""
+        }
+    },
+    "authors": [{"name":"jakumi", "role":"Developer"}],
+    "require": {
+        "php": "^7.0",
+        "swiftmailer/swiftmailer": "~5.0",
+        "symfony/dependency-injection": "^2.7 || ^3.0",
+        "aws/aws-sdk-php-symfony": "^1.3"
+    }
+}

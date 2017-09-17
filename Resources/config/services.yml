@@ -1,0 +1,3 @@
+services:
+  symfony_ses:
+    class: "jakumi\SymfonySes\SesTransport"
