@@ -9,7 +9,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
     private $client;
 
     function __construct(\Swift_Events_EventDispatcher $eventDispatcher, SesClient $client) {
-        $this->_eventDispatcher = $eventDispatcher
+        $this->_eventDispatcher = $eventDispatcher;
         $this->client = $client;
     }
 
