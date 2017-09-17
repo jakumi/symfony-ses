@@ -8,7 +8,8 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
 
     private $client;
 
-    function __construct(SesClient $client) {
+    function __construct(\Swift_Events_EventDispatcher $eventDispatcher, SesClient $client) {
+        $this->_eventDispatcher = $eventDispatcher
         $this->client = $client;
     }
 
@@ -25,6 +26,13 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             return $address;
         }
     }
+
+    public function start() {}
+    public function stop() {}
+    public fucntion isStarted() {
+        return true;
+    }
+
 
     /**
      * Sends the given message.
