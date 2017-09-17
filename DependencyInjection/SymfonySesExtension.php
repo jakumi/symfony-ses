@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader;
+use Aws\Ses\SesClient;
 
 class SymfonySesExtension extends Extension {
     public function load(array $configs, ContainerBuilder $container) {
@@ -16,6 +17,8 @@ class SymfonySesExtension extends Extension {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->register('client', Aws\Ses\SesClient::class)
+            ->addArgument('@'.Aws\Ses\SesClient::class);
         $container->setAlias('swiftmailer.mailer.transport.ses', 'symfony_ses');
     }
 }
