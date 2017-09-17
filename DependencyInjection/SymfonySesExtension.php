@@ -16,9 +16,6 @@ class SymfonySesExtension extends Extension {
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-
-        $container->register('client', Aws\Ses\SesClient::class)
-            ->addArgument('@'.Aws\Ses\SesClient::class);
-        $container->setAlias('swiftmailer.mailer.transport.ses', 'symfony_ses');
+        $container->setAlias('swiftmailer.mailer.transport.ses', 'jakumi\SymfonySes\SesTransport');
     }
 }
