@@ -1,5 +1,4 @@
 services:
   symfony_ses:
     class: "jakumi\SymfonySes\SesTransport"
-    arguments:
-      client: '@Aws\Ses\SesClient'
+    arguments: ['@Aws\Ses\SesClient']
