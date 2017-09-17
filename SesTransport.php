@@ -115,26 +115,4 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
 
         return count($to) + count($cc);
     }
-
-    /** Determine the best-use reverse path for this message,
-     * shamelessly copied from SwiftMailer's implementation */
-    private function _getReversePath(\Swift_Mime_Message $message)
-    {
-        $return = $message->getReturnPath();
-        $sender = $message->getSender();
-        $from = $message->getFrom();
-        $path = null;
-        if (!empty($return)) {
-            $path = $return;
-        } elseif (!empty($sender)) {
-            $keys = array_keys($sender);
-            $path = array_shift($keys);
-        } elseif (!empty($from)) {
-            $keys = array_keys($from);
-            $path = array_shift($keys);
-        }
-
-        return $path;
-    }
-
 }
