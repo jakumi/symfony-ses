@@ -1,9 +1,8 @@
 <?php
 
 use Aws\Ses\SesClient;
-use Swift_Transport_AbstractSmtpTransport;
 
-class SesTransport extends Swift_Transport_AbstractSmtpTransport {
+class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
 
     private $client;
 
@@ -19,7 +18,7 @@ class SesTransport extends Swift_Transport_AbstractSmtpTransport {
 
     protected function _formatAddress(string $address, string $name=null) {
         if(!empty($name)) {
-            return '=?utf-8?B?'.Swift_Encoding::getBase64Encoding()->encodeString($recipient).'?=" <'.$address.'>';
+            return '=?utf-8?B?'.\Swift_Encoding::getBase64Encoding()->encodeString($recipient).'?=" <'.$address.'>';
         } else {
             return $address;
         }
@@ -28,12 +27,12 @@ class SesTransport extends Swift_Transport_AbstractSmtpTransport {
     /**
      * Sends the given message.
      *
-     * @param Swift_Mime_Message $message
+     * @param \Swift_Mime_Message $message
      * @param string[]           $failedRecipients An array of failures by-reference
      *
      * @return int The number of sent emails
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(\Swift_Mime_Message $message, &$failedRecipients = null) {
 
         if ($evt = $this->_eventDispatcher->createSendEvent($this, $message)) {
             $this->_eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
@@ -52,10 +51,10 @@ class SesTransport extends Swift_Transport_AbstractSmtpTransport {
             + count((array) $message->getBcc())
         );
         if($number > static::MAX_RECIPIENTS) {
-            throw new Swift_TransportException('to many recipients for AWS SES');
+            throw new \Swift_TransportException('to many recipients for AWS SES');
         }
         if(!$this->getSender()) {
-            throw new Swift_TransportException('sender must be specified');
+            throw new \Swift_TransportException('sender must be specified');
         }
         foreach($to as $address => $recipient) {
             $_to[] = $this->_formatAddress($address, $recipient);
@@ -110,7 +109,7 @@ class SesTransport extends Swift_Transport_AbstractSmtpTransport {
         $message->setBcc([]);
 
         if ($evt) {
-            $evt->setResult(Swift_Events_SendEvent::RESULT_SUCCESS);
+            $evt->setResult(\Swift_Events_SendEvent::RESULT_SUCCESS);
             $this->_eventDispatcher->dispatchEvent($evt, 'sendPerformed');
         }
 
@@ -119,7 +118,7 @@ class SesTransport extends Swift_Transport_AbstractSmtpTransport {
 
     /** Determine the best-use reverse path for this message,
      * shamelessly copied from SwiftMailer's implementation */
-    private function _getReversePath(Swift_Mime_Message $message)
+    private function _getReversePath(\Swift_Mime_Message $message)
     {
         $return = $message->getReturnPath();
         $sender = $message->getSender();
