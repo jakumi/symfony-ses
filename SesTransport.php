@@ -87,7 +87,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
         //
 
         $message = [
-            'ReturnPath' => $this->_getReversePath,
+            'ReturnPath' => $this->_getReversePath($message),
             'Source' => $message->getSender(),
             //'ReplyToAddresses' => [],
             'Destination' => [
