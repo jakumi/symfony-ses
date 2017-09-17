@@ -100,11 +100,11 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             ],
             'Message' => [
                 'Subject' => [
-                    'Data' => $mail->getSubject(),
+                    'Data' => $message->getSubject(),
                     'Charset' => 'UTF-8',
                 ],
                 'Body' => [
-                    'Data' => $mail->getBody(),
+                    'Data' => $message->getBody(),
                     'Charset' => 'UTF-8',
                 ],
             ]
