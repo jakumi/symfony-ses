@@ -60,19 +60,19 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             + count((array) $message->getCc())
             + count((array) $message->getBcc())
         );
-        if($number > static::MAX_RECIPIENTS) {
+        if($count > static::MAX_RECIPIENTS) {
             throw new \Swift_TransportException('to many recipients for AWS SES');
         }
-        if(!$this->getSender()) {
+        if(!$message->getSender()) {
             throw new \Swift_TransportException('sender must be specified');
         }
         foreach($to as $address => $recipient) {
             $_to[] = $this->_formatAddress($address, $recipient);
         }
-        foreach($cc as $address => $recipeint) {
+        foreach($cc as $address => $recipient) {
             $_cc[] = $this->_formatAddress($address, $recipient);
         }
-        foreach($bcc as $address => $recipeint) {
+        foreach($bcc as $address => $recipient) {
             $_bcc[] = $this->_formatAddress($address, $recipient);
         }
 
@@ -88,7 +88,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
 
         $message = [
             'ReturnPath' => $this->_getReversePath,
-            'Source' => $this->getSender(),
+            'Source' => $message->getSender(),
             //'ReplyToAddresses' => [],
             'Destination' => [
                 'ToAddresses' => $_to,
