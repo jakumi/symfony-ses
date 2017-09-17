@@ -66,12 +66,15 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
         if(!$message->getSender()) {
             throw new \Swift_TransportException('sender must be specified');
         }
+        $_to = [];
         foreach($to as $address => $recipient) {
             $_to[] = $this->_formatAddress($address, $recipient);
         }
+        $_cc = [];
         foreach($cc as $address => $recipient) {
             $_cc[] = $this->_formatAddress($address, $recipient);
         }
+        $_bcc = [];
         foreach($bcc as $address => $recipient) {
             $_bcc[] = $this->_formatAddress($address, $recipient);
         }
