@@ -115,7 +115,7 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
         try {
             $result = $this->client->sendEmail($request);
             $messageId = $result->get('MessageId');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new \Swift_TransportException($e->getMessage());
         }
 
