@@ -1,8 +1,7 @@
 services:
-  ses_service:
+  jakumi\SymfonySes\SesTransport:
     class: jakumi\SymfonySes\SesTransport
     autowire: true
     autoconfigure: true
-    arguments: ['@Aws\Ses\SesClient']
 
-  jakumi\SymfonySes\SesTransport: '@ses_service'
+  ses_service: '@jakumi\SymfonySes\SesTransport'
