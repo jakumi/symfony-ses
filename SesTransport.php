@@ -50,7 +50,6 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
                 return 0;
             }
         }
-
         $to = (array) $message->getTo();
         $cc = (array) $message->getCc();
         $tos = array_merge($to, $cc);
@@ -60,60 +59,19 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             + count((array) $message->getCc())
             + count((array) $message->getBcc())
         );
-        if($count > static::MAX_RECIPIENTS) {
-            throw new \Swift_TransportException('to many recipients for AWS SES');
+        if($number > static::MAX_RECIPIENTS) {
+            throw new Swift_TransportException('to many recipients for AWS SES');
         }
-        if(!$message->getSender()) {
-            throw new \Swift_TransportException('sender must be specified');
+        if(!$this->getSender()) {
+            throw new Swift_TransportException('sender must be specified');
         }
-        $_to = [];
-        foreach($to as $address => $recipient) {
-            $_to[] = $this->_formatAddress($address, $recipient);
-        }
-        $_cc = [];
-        foreach($cc as $address => $recipient) {
-            $_cc[] = $this->_formatAddress($address, $recipient);
-        }
-        $_bcc = [];
-        foreach($bcc as $address => $recipient) {
-            $_bcc[] = $this->_formatAddress($address, $recipient);
-        }
-
-
-        //$request = array();
-        //$request['Source'] = $mail->sender_email;
-        //$request['Destination']['ToAddresses'] = [$mail->format_recipient()];
-        //$request['Message']['Subject']['Data'] = $mail->subject;
-        //$request['Message']['Subject']['Charset'] = 'UTF-8';
-        //$request['Message']['Body']['Text']['Data'] = $mail->body;
-        //$request['Message']['Body']['Text']['Charset'] = 'UTF-8';
-        //
-
-        $request = [
-            'ReturnPath' => $this->_getReversePath($message),
-            'Source' => $this->_getReversePath($message),
-            //'ReplyToAddresses' => [],
-            'Destination' => [
-                'ToAddresses' => $_to,
-                'CcAddresses' => $_cc,
-                'BccAddresses' => $_bcc,
-            ],
-            'Message' => [
-                'Subject' => [
-                    'Data' => $message->getSubject(),
-                    'Charset' => 'UTF-8',
-                ],
-                'Body' => [
-                    'Text' => [
-                        'Data' => $message->getBody(),
-                        'Charset' => 'UTF-8',
-                    ],
-                ],
-            ]
-        ];
 
         try {
-            $result = $this->client->sendEmail($request);
+            $result = $this->client->sendRawEmail([
+                'RawMessage'=> [
+                    'Data' => $message->toString(),
+                ],
+            ]);
             $messageId = $result->get('MessageId');
         } catch (\Exception $e) {
             throw new \Swift_TransportException($e->getMessage());
