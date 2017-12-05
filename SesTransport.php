@@ -60,10 +60,10 @@ class SesTransport extends \Swift_Transport_AbstractSmtpTransport {
             + count((array) $message->getBcc())
         );
         if($count > static::MAX_RECIPIENTS) {
-            throw new Swift_TransportException('to many recipients for AWS SES');
+            throw new \Swift_TransportException('to many recipients for AWS SES');
         }
         if(!$message->getSender()) {
-            throw new Swift_TransportException('sender must be specified');
+            throw new \Swift_TransportException('sender must be specified');
         }
 
         try {
